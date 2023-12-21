@@ -2,11 +2,17 @@
   "name": "framework",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
+  "files": [
+    "."
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.10.5"
+  }
 }
