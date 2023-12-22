@@ -1,10 +1,23 @@
+import chalk from "chalk";
+import console from "console";
 import console from "console";
 import fs from "fs/promises";
 import path from "path";
 import { sql } from "~/database/connection";
 import { Migration } from "~/migrations";
+import { installMigrationsTable } from "~/migrations/install";
 
 export async function runMigrations() {
+  // check if migrations table exists
+  const migrationsTable = await sql`
+          select * from information_schema.tables where table_name = 'migrations';
+          `;
+  if (migrationsTable.rowCount === 0) {
+    console.warn("No migrations table found, creating one now");
+    await installMigrationsTable();
+    console.info("Migrations table created");
+  }
+
   const batch = await sql`
     select coalesce(max(batch), 0) + 1 as next_batch from migrations;
     `;
@@ -13,12 +26,18 @@ export async function runMigrations() {
   const migrations = await sql`
     select * from migrations order by migration;
     `;
-    const migrationsDir = path.join(process.cwd(), "database/migrations");
+  const migrationsDir = path.join(process.cwd(), "database/migrations");
   // find all migrations in `database/migrations` and list them out
   const files = await fs.readdir(migrationsDir);
   // all migration files have a default export of a class that extends Migration
   // the migration name is the file name
-  const migrationFiles = files.filter((file) => file.endsWith(".ts"));
+  const migrationFiles = files
+    .filter((file) => file.endsWith(".ts"))
+    .sort((a, b) => {
+      const aDate = a.split("_")[0];
+      const bDate = b.split("_")[0];
+      return aDate.localeCompare(bDate);
+    });
   const migrationClasses = await Promise.all(
     migrationFiles.map((file) => import(path.join(migrationsDir, file)))
   );
@@ -40,14 +59,11 @@ export async function runMigrations() {
     console.info("No migrations to run");
     return;
   }
-  console.debug(
-    `Migrations to run: ${toRun.length} - ${toRun
-      .map((m) => m.name)
-      .join(", ")}`
-  );
+  console.debug(`Migrations to run: ${toRun.length}`);
 
   // run the migrations
   for (const migration of toRun) {
+    console.info(chalk.gray(`Running  ${migration.name}`));
     const m: Migration = new migration.mClass();
     await sql`begin`;
 
@@ -92,5 +108,6 @@ export async function runMigrations() {
       insert into migrations (migration, batch) values (${migration.name}, ${nextBatch});
   `;
     await sql`commit`;
+    console.info(chalk.white.bold(`Finished ${migration.name}`));
   }
 }
