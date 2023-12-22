@@ -1,7 +1,10 @@
 #!/usr/bin/env bun
+import chalk from 'chalk';
 import fs from "fs/promises";
 import path from "path";
-import { Command } from "packages/cli/command";
+import { Command } from "~/command";
+
+const startTimeNano = process.hrtime.bigint();
 
 async function runCommandInFileNamed(fileName: string) {
   const mod = await import(fileName);
@@ -16,7 +19,6 @@ async function runCommandInFileNamed(fileName: string) {
 
   const commandInstance = new CommandClass(commandArgs);
   await commandInstance.handle();
-  process.exit(0);
 }
 
 const args = process.argv.slice(2);
@@ -44,7 +46,15 @@ for (const dir of commandResolutionDirs) {
     const command = commands.find((c) => c.commandName === commandName);
     if (command) {
       await runCommandInFileNamed(command.filePath);
-      break;
+      const endTimeNano = process.hrtime.bigint();
+      const timeDiff = endTimeNano - startTimeNano;
+      const timeDiffMs = Number(timeDiff) / 1000000;
+      console.log(
+        chalk.grey(
+          `\nFinished '${chalk.gray.bold(command.commandName)}' in ${timeDiffMs.toFixed(2)}ms`
+        )
+      );
+      process.exit(0);
     }
   } catch (e: any) {
     // Ignore a missing directory
