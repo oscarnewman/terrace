@@ -1,27 +1,27 @@
 {
-    "name": "framework",
-    "version": "0.0.1",
-    "description": "",
-    "main": "index.ts",
-    "files": [
-        "."
-    ],
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "type": "module",
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "dependencies": {
-        "chalk": "^5.3.0",
-        "cli": "workspace:*"
-    },
-    "devDependencies": {
-        "@types/node": "^20.10.5",
-        "eslint": "^8.38.0",
-        "eslint-config-prettier": "^9.0.0",
-        "eslint-plugin-prettier": "^5.1.1",
-        "prettier": "^3.1.1"
-    }
+  "name": "framework",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.ts",
+  "files": [
+    "."
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "cli": "workspace:*",
+    "pg": "^8.11.3",
+    "sql-formatter": "^15.0.2",
+    "sql-highlight": "^4.4.0",
+    "sql-template-tag": "^5.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.5",
+    "@types/pg": "^8.10.9"
+  }
 }

@@ -1,9 +1,7 @@
-import { Command } from 'packages/cli/command'
+import { Command } from 'cli/command'
 import chalk from 'chalk'
 
 export default class extends Command {
-  public static signature = 'inspire'
-
   public async handle(): Promise<void> {
     const inspirations = [
       '“The best time to plant a tree was 20 years ago. The second best time is now.” – Chinese Proverb',
