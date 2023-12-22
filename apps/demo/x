@@ -1,2 +1,0 @@
-#!/bin/bash
-pnpm exec tsx ./x.ts "$@"

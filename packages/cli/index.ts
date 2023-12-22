@@ -21,13 +21,11 @@ async function runCommandInFileNamed(fileName: string) {
 
 const args = process.argv.slice(2);
 
+// All the folders we expect to hold commands
 const commandResolutionDirs = [
   "node_modules/framework/commands",
   "./app/commands",
 ];
-
-// commands are stored as files in each of those dirs. "Framework" responds to the framework npm package and its sub-dir.
-// We need to resolve the command name to a file path.
 
 const commandName = args[0];
 const commandArgs = args.slice(1);
@@ -35,17 +33,24 @@ const commandArgs = args.slice(1);
 const cwd = process.cwd();
 
 for (const dir of commandResolutionDirs) {
-  const commands = await fs.readdir(path.join(cwd, dir)).then((c) =>
-    c.map((f) => ({
-      filePath: path.join(cwd, dir, f),
-      commandName: f.replace(".ts", ""),
-    }))
-  );
+  try {
+    const commands = await fs.readdir(path.join(cwd, dir)).then((c) =>
+      c.map((f) => ({
+        filePath: path.join(cwd, dir, f),
+        commandName: f.replace(".ts", ""),
+      }))
+    );
 
-  const command = commands.find((c) => c.commandName === commandName);
-  if (command) {
-    await runCommandInFileNamed(command.filePath);
-    break;
+    const command = commands.find((c) => c.commandName === commandName);
+    if (command) {
+      await runCommandInFileNamed(command.filePath);
+      break;
+    }
+  } catch (e: any) {
+    // Ignore a missing directory
+    if (e.code !== "ENOENT") {
+      console.error(e);
+    }
   }
 }
 

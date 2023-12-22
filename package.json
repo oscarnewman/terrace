@@ -10,7 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "tsx": "^4.7.0",
     "turbo": "^1.11.2"
   },
   "devDependencies": {
