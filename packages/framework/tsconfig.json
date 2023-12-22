@@ -1,5 +1,5 @@
 {
-  "include": ["**/*.ts", "**/*.tsx"],
+  "include": ["**/*.ts", "**/*.tsx", "./*.ts"],
   "compilerOptions": {
     "module": "esnext",
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
@@ -14,10 +14,7 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./*"]
+      "@framework/*": ["./*"]
     },
-
-    // Remix takes care of building everything in `remix build`.
-    "noEmit": true
   }
 }

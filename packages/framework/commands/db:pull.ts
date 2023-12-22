@@ -1,8 +1,8 @@
 import { Command } from 'cli/command'
-import { installMigrationsTable } from '@framework/migrations/install'
+import { loadSchemaAndWrite } from '@framework/codegen'
 
 export default class extends Command {
   public async handle(): Promise<void> {
-    await installMigrationsTable()
+    await loadSchemaAndWrite()
   }
 }

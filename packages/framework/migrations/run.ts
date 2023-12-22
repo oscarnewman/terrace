@@ -1,11 +1,9 @@
+import { sql } from "@framework/database/connection";
+import { Migration } from "@framework/migrations";
+import { installMigrationsTable } from "@framework/migrations/install";
 import chalk from "chalk";
-import console from "console";
-import console from "console";
 import fs from "fs/promises";
 import path from "path";
-import { sql } from "~/database/connection";
-import { Migration } from "~/migrations";
-import { installMigrationsTable } from "~/migrations/install";
 
 export async function runMigrations() {
   // check if migrations table exists

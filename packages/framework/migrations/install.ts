@@ -1,4 +1,4 @@
-import { sql } from "~/database/connection";
+import { sql } from "@framework/database/connection";
 
 export async function installMigrationsTable() {
   await sql`

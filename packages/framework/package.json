@@ -2,12 +2,20 @@
   "name": "framework",
   "version": "0.0.1",
   "description": "",
-  "main": "index.ts",
+  "main": "dist/index.mjs",
+  "sideEffects": false,
+  "exports": {
+    "./orm": {
+        "import": "./dist/orm/index.mjs",
+        "types": "./dist/orm/index.d.ts"
+    }
+  },
   "files": [
-    "."
+    "./dist"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsup"
   },
   "keywords": [],
   "author": "",
@@ -15,13 +23,21 @@
   "dependencies": {
     "chalk": "^5.3.0",
     "cli": "workspace:*",
+    "framework": "^0.0.1",
+    "handlebars": "^4.7.8",
+    "lodash": "^4.17.21",
     "pg": "^8.11.3",
+    "pluralize": "^8.0.0",
+    "prettier": "^3.1.1",
     "sql-formatter": "^15.0.2",
     "sql-highlight": "^4.4.0",
     "sql-template-tag": "^5.2.0"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.202",
     "@types/node": "^20.10.5",
-    "@types/pg": "^8.10.9"
+    "@types/pg": "^8.10.9",
+    "@types/pluralize": "^0.0.33",
+    "tsup": "^8.0.1"
   }
 }
