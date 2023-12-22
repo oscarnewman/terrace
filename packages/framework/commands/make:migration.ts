@@ -1,43 +1,43 @@
-import chalk from "chalk"
-import { Command } from "cli/command"
-import fs from "fs/promises"
-import path from "path"
+import chalk from 'chalk'
+import { Command } from 'cli/command'
+import fs from 'fs/promises'
+import path from 'path'
 
 export default class MakeMigration extends Command {
-	public async handle() {
-		const name = this.args._[0]
-		if (!name) {
-			console.log("Please provide a name for the migration")
-			return
-		}
+  public async handle() {
+    const name = this.args._[0]
+    if (!name) {
+      console.log('Please provide a name for the migration')
+      return
+    }
 
-		const tableName = this.args.table ?? this.args.T ?? undefined
+    const tableName = this.args.table ?? this.args.T ?? undefined
 
-		const template = tableName ? templates.createTable(tableName) : templates.base()
+    const template = tableName ? templates.createTable(tableName) : templates.base()
 
-		// migration name pattern is 20231218193824_create_users_table.ts
-		const date = new Date()
-		const year = date.getFullYear()
-		const month = date.getMonth() + 1
-		const day = date.getDate()
-		const hours = date.getHours()
-		const minutes = date.getMinutes()
-		const seconds = date.getSeconds()
+    // migration name pattern is 20231218193824_create_users_table.ts
+    const date = new Date()
+    const year = date.getFullYear()
+    const month = date.getMonth() + 1
+    const day = date.getDate()
+    const hours = date.getHours()
+    const minutes = date.getMinutes()
+    const seconds = date.getSeconds()
 
-		const dateStr = `${year}${month}${day}${hours}${minutes}${seconds}`
+    const dateStr = `${year}${month}${day}${hours}${minutes}${seconds}`
 
-		// normalize the name to be lowercase and snake_case
-		const normalizedName = name.toLowerCase().replace(/ /g, "_")
-		const fileName = `${dateStr}_${normalizedName}.ts`
+    // normalize the name to be lowercase and snake_case
+    const normalizedName = name.toLowerCase().replace(/ /g, '_')
+    const fileName = `${dateStr}_${normalizedName}.ts`
 
-		const filePath = path.join(process.cwd(), "database", "migrations", fileName)
-		await fs.writeFile(filePath, template)
-        console.log(chalk.green(`Created migration ${chalk.bold(fileName)}`))
-	}
+    const filePath = path.join(process.cwd(), 'database', 'migrations', fileName)
+    await fs.writeFile(filePath, template)
+    console.log(chalk.green(`Created migration ${chalk.bold(fileName)}`))
+  }
 }
 
 const templates = {
-	base: () => `import { sql } from "database";
+  base: () => `import { sql } from "database";
 import { Migration } from "framework/database/Migration";
 
 export default class extends Migration {
@@ -59,7 +59,7 @@ export default class extends Migration {
     \`;
   }
 }`,
-	createTable: (tableName: string) => `import { sql } from "database";
+  createTable: (tableName: string) => `import { sql } from "database";
 import { Migration } from "framework/database/Migration";
 
 export default class extends Migration {

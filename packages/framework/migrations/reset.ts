@@ -1,4 +1,4 @@
-import { sql } from "~/database/connection";
+import { sql } from '~/database/connection'
 
 export async function resetDatabase() {
   await sql`
@@ -51,5 +51,5 @@ export async function resetDatabase() {
             -- END LOOP;
         END
         $$;
-        `;
+        `
 }

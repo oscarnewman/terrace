@@ -1,4 +1,4 @@
-import { sql } from "~/database/connection";
+import { sql } from '~/database/connection'
 
 export async function installMigrationsTable() {
   await sql`
@@ -8,5 +8,5 @@ export async function installMigrationsTable() {
         batch int NOT NULL,
         created_at timestamp DEFAULT NOW()
     );
-`;
+`
 }
