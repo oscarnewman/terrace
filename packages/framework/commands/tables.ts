@@ -1,6 +1,6 @@
 import chalk from "chalk";
 import { Command } from "cli/command";
-import { sql } from "~/database/connection";
+import { sql } from "@framework/database/connection";
 
 export default class extends Command {
   public async handle(): Promise<void> {

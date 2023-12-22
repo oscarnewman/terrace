@@ -40,6 +40,7 @@ for (const dir of commandResolutionDirs) {
 
     const command = commands.find(c => c.commandName === commandName)
     if (command) {
+      console.log(chalk.grey(`Running '${chalk.gray.bold(command.commandName)}'...`))
       await runCommandInFileNamed(command.filePath)
       const endTimeNano = process.hrtime.bigint()
       const timeDiff = endTimeNano - startTimeNano
@@ -54,6 +55,8 @@ for (const dir of commandResolutionDirs) {
   } catch (e: any) {
     // Ignore a missing directory
     if (e.code !== 'ENOENT') {
+      console.error(e)
+    } else {
       console.error(e)
     }
   }
